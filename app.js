@@ -1,24 +1,21 @@
 import express from "express";
 import mailSender from "./mail";
+const PORT = 3000;
 const app = express();
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
   
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/send',(req,res) => {
-  const emailParam = {
-    toEmail:'upfall.ray@gmail.com',
-    subject:'testest',
-    text:'mailTest'
-  }
+app.post('/send',(req,res) => {
+  const emailParam = req.body;
   mailSender.sendMail(emailParam);
   res.status(200).send('success');
 })
   
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
+var server = app.listen(PORT, function () {
   
-  console.log('Server is working : PORT - ',port);
+  console.log('Server is listetn: ',PORT);
 });
